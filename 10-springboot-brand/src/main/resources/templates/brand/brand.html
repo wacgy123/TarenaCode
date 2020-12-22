@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Brand List</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+<h1>The Brand Page</h1>
+     <form>
+         <input type="text" name="name">
+         <input type="button" value="Search" onclick="doQueryBrands()" class="btn btn-primary">
+         <input type="button" value="Add" onclick="doAddUI()" class="btn btn-primary">
+     </form>
+     <table class="table">
+        <!--thead用于定义table中的列标题部分-->
+        <thead>
+         <tr>
+             <th>id</th>
+             <th>name</th>
+             <th>remark</th>
+             <th>createdTime</th>
+             <th>operation</th>
+         </tr>
+        </thead>
+        <!--tbody用于定义table中的表体部分-->
+        <tbody>
+           <tr th:each="brand:${list}">
+               <td th:text="${brand.id}"></td>
+               <td th:text="${brand.name}"></td>
+               <td th:text="${brand.remark}"></td>
+               <td th:text="${#dates.format(brand.createdTime, 'yyyy/MM/dd HH:mm')}"></td>
+               <td>
+                   <button type="button" class="btn btn-danger btn-xs" th:onclick="doDeleteById('[[${brand.id}]]')">delete</button>
+                   <button type="button" class="btn btn-danger btn-xs" th:onclick="doFindById('[[${brand.id}]]')">update</button>
+               </td>
+           </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+     function doAddUI(){
+         location.href=`http://localhost/brand/doAddUI`;
+     }
+     function doFindById(id){
+         location.href=`http://localhost/brand/doFindById/${id}`;
+     }
+     function doDeleteById(id){
+         location.href=`http://localhost/brand/doDeleteById/${id}`;
+     }
+     function doQueryBrands(){
+         console.log("===doQueryBrands()==");
+         //获取表单输入的品牌名称
+         let name=document.forms[0].name.value;
+         //访问服务端指定的url
+         location.href=`http://localhost/brand/doFindBrands/${name}`;
+         //如上语句中使用到了js中的模板字符串，其语法为`字符串`,在反引号内部
+         //还可以使用${}表达式获取变量的值
+     }
+</script>
+</body>
+</html>
