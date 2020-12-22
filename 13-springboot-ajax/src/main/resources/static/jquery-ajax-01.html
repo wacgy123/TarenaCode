@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1>The Jquery Ajax 01 Page</h1>
+    <button onclick="doAjax()">$.ajax(...)</button>
+    <button onclick="doAjaxPost()">$.ajaxPost(...)</button>
+    <button onclick="doAjaxGet()">$.ajaxGet(...)</button>
+    <button onclick="doAjaxPut()">$.ajaxPut(...)</button>
+</div>
+<div id="result"></div>
+<script src="/js/jquery-3.4.1.min.js"></script>
+<script>
+    function doAjaxGet(){
+        let url="/doAjaxGet";
+        $.ajax({
+            url:url,
+            success:function (result){
+                console.log("result"+result);
+                $("#result").html(JSON.stringify(result));
+            }
+        },"text");
+    }
+    function doAjaxPost(){
+        let url="/doAjaxPost";
+        let params="id=200&name=oppo&remark=very good";
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:params,
+            success:function (result){
+                $("#result").html(result);
+            }
+        })
+    }
+</script>
+</body>
+</html>

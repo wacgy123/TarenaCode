@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1>The Ajax 02 Page</h1>
+    <button onclick="doAjaxGet()">Do Ajax Get</button>
+    <button onclick="doAjaxPost()">Do Ajax Post</button>
+    <button onclick="doAjaxDelete()">Do Ajax Delete</button>
+    <button onclick="doAjaxPut()">Do Ajax Put</button>
+</div>
+<div id="result"></div>
+<script>
+    function doAjaxGet(){
+        let xhr=new XMLHttpRequest();
+        xhr.onreadystatechange=function (){
+            if(xhr.readyState===4){
+                if(xhr.status===200){
+                    document.getElementById("result").innerHTML=xhr.responseText;
+                }
+            }
+        }
+        xhr.open("GET","http://localhost/doAjaxGet",true);
+        xhr.send(null);
+    }
+    function doAjaxPost(){
+        let xhr=new XMLHttpRequest();
+        xhr.onreadystatechange=function (){
+            if(xhr.readyState===4){
+                if(xhr.status===200){
+                    document.getElementById("result").innerHTML=xhr.responseText;
+                }
+            }
+        }
+        xhr.open("POST","http://localhost/doAjaxPost",true);
+        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xhr.send("id=200&name=xiaomi&remark=very good");
+    }
+    function doAjaxDelete(){
+        let xhr=new XMLHttpRequest();
+        xhr.onreadystatechange=function (){
+            if(xhr.readyState===4){
+                if(xhr.status===200){
+                    document.getElementById("result").innerHTML=xhr.responseText;
+                }
+            }
+        }
+        xhr.open("DELETE","http://localhost/doAjaxDelete/200",true);
+        xhr.send(null);
+    }
+    function doAjaxPut() {
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    document.getElementById("result").innerHTML = xhr.responseText;
+                }
+            }
+        }
+        xhr.open("PUT", "http://localhost/doAjaxPut", true);
+        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xhr.send("id=200&name=pingguo&remark=very good");
+    }
+</script>
+</body>
+</html>
