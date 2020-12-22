@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.pj.sys.dao.SysMenuDao">
+    <resultMap id="sysUserMenu" type="com.cy.pj.sys.pojo.SysUserMenu">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="url" column="url"></result>
+        <collection property="childs" ofType="com.cy.pj.sys.pojo.SysUserMenu">
+            <id property="id" column="id"></id>
+            <result property="name" column="name"></result>
+            <result property="url" column="url"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findMenusByIds" resultMap="sysUserMenu">
+        select f.id,f.name,f.url,s.id sid,s.name sname,s.url surl
+        from sys_menus f left join sys_menus s
+        on s.parentId=f.id where f.parentId is null and s.id in
+        <foreach collection="menuIds" open="(" close=")" separator="," item="menuId">
+            #{menuId}
+        </foreach>
+    </select>
+
+    <select id="findPermissions" resultType="string">
+        select permission from sys_menus where id in
+        <foreach collection="menuIds" open="(" close=")" separator="," item="menuId">
+            #{menuId}
+        </foreach>
+    </select>
+    <select id="findObjects" resultType="map">
+        select c.*,(select name from sys_menus p where c.parentId=p.id) parentName from sys_menus c
+    </select>
+    <insert id="insertObject">
+        insert into sys_menus values(#{id},#{name},#{url},#{type},#{sort},#{note},#{parentId},#{permission},#{createdTime},#{modifiedTime},#{createdUser},#{modifiedUser});
+    </insert>
+    <update id="updateObject">
+        update sys_menus set name=#{name},url=#{url},type=#{type},sort=#{sort},note=#{note},parentId=#{parentId},permission=#{permission},createdTime=#{createdTime},modifiedTime=now(),createdUser=#{createdUser},modifiedUser=#{modifiedUser} where id=#{id};
+    </update>
+</mapper>

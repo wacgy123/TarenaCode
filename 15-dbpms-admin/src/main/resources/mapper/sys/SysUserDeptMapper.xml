@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cy.pj.sys.dao.SysUserDeptDao">
+    <resultMap id="queryUserDept" type="com.cy.pj.sys.pojo.SysUserDept">
+        <id property="id" column="id"></id>
+        <result property="username" column="username"></result>
+        <result property="email" column="email"></result>
+        <result property="mobile" column="mobile"></result>
+        <result property="valid" column="valid"></result>
+        <result property="createdTime" column="createdTime"></result>
+        <result property="modifiedTime" column="modifiedTime"></result>
+    </resultMap>
+    
+    <select id="getRowCounts" resultType="int">
+        select count(*) from sys_users u left join sys_depts d on u.deptId=d.id;
+    </select>
+
+    <select id="findObjects" resultMap="queryUserDept">
+        select u.id,u.username,d.name,u.email,u.mobile,u.valid,u.createdTime,u.modifiedTime
+        from sys_users u left join sys_depts d on u.deptId=d.id
+        <where>
+            <if test="username!=null and username!=''">
+                username like concat("%",#{username},"%")
+            </if>
+        </where>
+        order by createdTime desc limit #{startIndex},#{pageSize}
+    </select>
+</mapper>
